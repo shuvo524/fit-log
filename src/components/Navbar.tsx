@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
+import { usePlan } from "@/context/PlanContext";
 
 const links = [
   { href: "/", label: "Workouts" },
@@ -11,10 +12,7 @@ const links = [
 
 export default function Navbar() {
   const pathname = usePathname();
-
-  // Commit #7 এ এগুলো PlanContext থেকে আসবে
-  const planCount = 0;
-  const savedCount = 0;
+  const { planIds, savedIds } = usePlan();
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -46,13 +44,13 @@ export default function Navbar() {
           <Link href="/my-plan" className="flex items-center gap-2">
             <span>Plan</span>
             <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1.5 text-xs font-bold text-black">
-              {planCount}
+              {planIds.length}
             </span>
           </Link>
           <Link href="/my-plan" className="flex items-center gap-2 text-muted">
             <span>Saved</span>
             <span className="grid h-5 min-w-5 place-items-center rounded-full border border-line px-1.5 text-xs font-semibold text-white">
-              {savedCount}
+              {savedIds.length}
             </span>
           </Link>
         </div>
