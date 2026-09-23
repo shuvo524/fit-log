@@ -21,7 +21,7 @@ export default function Navbar() {
     <header className="border-b border-line">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-4 sm:px-6 md:grid md:grid-cols-[1fr_auto_1fr] lg:px-8">
         <div className="justify-self-start">
-          <Logo />
+          <Logo hideTextOnMobile />
         </div>
 
         <nav className="flex items-center gap-1">

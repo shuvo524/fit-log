@@ -2,7 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import logo from "@/assets/logo.png";
 
-export default function Logo({ small = false }: { small?: boolean }) {
+interface LogoProps {
+  small?: boolean;
+  hideTextOnMobile?: boolean;
+}
+
+export default function Logo({
+  small = false,
+  hideTextOnMobile = false,
+}: LogoProps) {
   return (
     <Link href="/" className="flex items-center gap-2">
       <Image
@@ -14,7 +22,7 @@ export default function Logo({ small = false }: { small?: boolean }) {
       <span
         className={`font-display font-bold uppercase tracking-wide text-white ${
           small ? "text-sm" : "text-xl"
-        }`}
+        } ${hideTextOnMobile ? "hidden min-[420px]:inline" : ""}`}
       >
         FitLog
       </span>

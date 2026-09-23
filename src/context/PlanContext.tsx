@@ -1,12 +1,24 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+
+export const MAX_PLAN = 5;
+const STORAGE_KEY = "fitlog-state";
+
+export type AddPlanResult = "added" | "exists" | "full";
 
 interface PlanContextValue {
   planIds: number[];
   savedIds: number[];
   doneIds: number[];
-  addToPlan: (id: number) => boolean;
+  hydrated: boolean;
+  addToPlan: (id: number) => AddPlanResult;
   addToSaved: (id: number) => boolean;
   markDone: (id: number) => boolean;
   removeFromPlan: (id: number) => void;
@@ -15,16 +27,51 @@ interface PlanContextValue {
 
 const PlanContext = createContext<PlanContextValue | null>(null);
 
+const toIds = (value: unknown): number[] =>
+  Array.isArray(value)
+    ? value.filter((item): item is number => typeof item === "number")
+    : [];
+
 export function PlanProvider({ children }: { children: ReactNode }) {
   const [planIds, setPlanIds] = useState<number[]>([]);
   const [savedIds, setSavedIds] = useState<number[]>([]);
   const [doneIds, setDoneIds] = useState<number[]>([]);
+  const [hydrated, setHydrated] = useState(false);
 
-  // true = নতুন যোগ হলো, false = আগে থেকেই ছিল
-  const addToPlan = (id: number) => {
-    if (planIds.includes(id)) return false;
+  // পেজ লোড হলে localStorage থেকে আগের ডেটা ফিরিয়ে আনা
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        setPlanIds(toIds(parsed.planIds).slice(0, MAX_PLAN));
+        setSavedIds(toIds(parsed.savedIds));
+        setDoneIds(toIds(parsed.doneIds));
+      }
+    } catch {
+      // ডেটা নষ্ট থাকলে খালি অবস্থা থেকেই শুরু হবে
+    }
+    setHydrated(true);
+  }, []);
+
+  // কিছু বদলালেই localStorage-এ সেভ (পড়া শেষ হওয়ার আগে নয়)
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ planIds, savedIds, doneIds })
+      );
+    } catch {
+      // storage বন্ধ থাকলেও অ্যাপ চলবে
+    }
+  }, [planIds, savedIds, doneIds, hydrated]);
+
+  const addToPlan = (id: number): AddPlanResult => {
+    if (planIds.includes(id)) return "exists";
+    if (planIds.length >= MAX_PLAN) return "full";
     setPlanIds([...planIds, id]);
-    return true;
+    return "added";
   };
 
   const addToSaved = (id: number) => {
@@ -53,6 +100,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
         planIds,
         savedIds,
         doneIds,
+        hydrated,
         addToPlan,
         addToSaved,
         markDone,

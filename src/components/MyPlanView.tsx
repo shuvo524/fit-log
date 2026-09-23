@@ -9,18 +9,23 @@ import PlanTabs, { type PlanTab } from "./PlanTabs";
 import SortDropdown, { type SortKey } from "./SortDropdown";
 import PlanItem from "./PlanItem";
 import EmptyState from "./EmptyState";
+import Spinner from "./Spinner";
 
 export default function MyPlanView({ workouts }: { workouts: Workout[] }) {
   const {
     planIds,
     savedIds,
     doneIds,
+    hydrated,
     markDone,
     removeFromPlan,
     removeFromSaved,
   } = usePlan();
   const [tab, setTab] = useState<PlanTab>("plan");
   const [sortBy, setSortBy] = useState<SortKey>("duration");
+
+  // localStorage পড়া শেষ না হওয়া পর্যন্ত অপেক্ষা
+  if (!hydrated) return <Spinner />;
 
   const pick = (ids: number[]) =>
     ids
