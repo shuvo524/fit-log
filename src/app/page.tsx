@@ -1,4 +1,7 @@
+import { Suspense } from "react";
 import Hero from "@/components/Hero";
+import LibraryGrid from "@/components/LibraryGrid";
+import Spinner from "@/components/Spinner";
 
 export default function Home() {
   return (
@@ -15,7 +18,12 @@ export default function Home() {
         <p className="mt-1 text-sm text-muted">
           Twelve lifts covering every major muscle group.
         </p>
-        <div className="min-h-[50vh]" />
+
+        <div className="mt-8">
+          <Suspense fallback={<Spinner />}>
+            <LibraryGrid />
+          </Suspense>
+        </div>
       </section>
     </main>
   );
