@@ -8,15 +8,15 @@ const ctaClass =
 export default function Hero() {
   return (
     <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 lg:pt-12">
-      <div className="grid items-center gap-8 rounded-3xl border border-line bg-surface px-6 py-10 sm:px-10 lg:grid-cols-2 lg:px-14 lg:py-14">
+      <div className="grid items-center gap-8 rounded-3xl border border-line bg-surface px-6 py-10 sm:px-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:px-14 lg:py-14">
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-accent">
             Workout Library
           </p>
-          <h1 className="mt-4 font-display text-4xl font-bold uppercase leading-[1.05] sm:text-5xl lg:text-7xl">
+          <h1 className="mt-4 font-display text-4xl font-bold uppercase leading-[1] sm:text-5xl xl:text-[64px]">
             Train with intent. Log every set.
           </h1>
-          <p className="mt-5 max-w-md text-base leading-relaxed text-muted">
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-muted">
             FitLog is a dark, no-nonsense gym companion: pick a lift, lock it
             into today&apos;s plan, and watch the week&apos;s work add up.
           </p>
@@ -27,7 +27,7 @@ export default function Hero() {
           </a>
         </div>
 
-        <div className="flex justify-center lg:justify-end">
+        <div className="flex justify-center lg:justify-end lg:pr-16">
           <Image
             src={banner}
             alt="Muscle figure on a training machine"
