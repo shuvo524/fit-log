@@ -2,8 +2,8 @@
 
 FitLog is a dark, no-nonsense gym companion. Browse a library of twelve lifts, open a workout to see its full breakdown, lock it into today's plan, save it for later, and watch your minutes and calories add up.
 
-**Live Demo:** _add your Vercel link here_
-**Repository:** https://github.com/<your-username>/fitlog
+**Live Link:** https://fit-log-website.vercel.app/
+**Repository:** https://github.com/shuvo524/fit-log
 
 ## ✨ Features
 
